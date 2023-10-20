@@ -31,29 +31,42 @@ class Camera(QThread):
         self.running = False
 
 class WindowClass(QMainWindow, from_class) :
-    def __init__(self):
+    def __init__(self, parnet=None):
         super().__init__()
+        
         self.setupUi(self)
         self.setWindowTitle("Hello, Qt!")
         self.Stop.hide()
         self.Start.hide()
         self.shot.hide()
+        self.fps = 10
+        # self.Frame.setPixmap(self.pixmap)
+        # Set up the drawing variables
+        self.drawing = False
+        self.last_x, self.last_y = None, None
+
         self.isCameraOn = False
         self.isRecStart = False
         self.redTune = np.full((480,640),self.Rslider.value())
         self.greenTune = np.full((480,640),self.Gslider.value())
         self.blueTune = np.full((480,640),self.Bslider.value())
 
+        # self.tab1.mousePressEvent = self.mousePressEventTab1
+        # self.tab1.mouseMoveEvent = self.mouseMoveEventTab1
+
         self.pixmap = QPixmap()
+        self.Frame.setPixmap(self.pixmap)
         self.camera = Camera(self)
         self.camera.daemon = True
 
         self.record = Camera(self)
         self.record.daemon = True
-
         self.count = 0
+        self.cap = None
 
         # self.photoFile.clicked.connect(self.openPhoto)
+        self.photoFile.clicked.connect(self.openFile_camera)
+        self.videoFile.clicked.connect(self.openFile_video)
         self.camera.update.connect(self.updateCamera)
         self.Camonoff.clicked.connect(self.clickCamera)
         self.Start.clicked.connect(self.clickRecord)
@@ -63,41 +76,130 @@ class WindowClass(QMainWindow, from_class) :
         self.Rslider.valueChanged.connect(self.tuneR)
         self.Gslider.valueChanged.connect(self.tuneG)
         self.Bslider.valueChanged.connect(self.tuneB)
-        self.photoFile.clicked.connect(self.openFile_camera)
-        self.videoFile.clicked.connect(self.openFile_video)
         self.Rcheck.setCheckState(Qt.Checked)
         self.Gcheck.setCheckState(Qt.Checked)
         self.Bcheck.setCheckState(Qt.Checked)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+
         for kind in ['RGB','HSV']:
             self.colorDetail.addItem(kind)
 
+        for kind in ['Line','rectangle','circle']:
+            self.comboBox.addItem(kind)
 
         self.tuneColor()
         self.colorDetail.currentIndexChanged.connect(self.tuneColor)
         self.colorDetail.setCurrentText(str('RGB'))
+        self.tabWidget.setCurrentIndex(0)
+        self.comboBox.setCurrentIndex(0)
+        # self.comboBox.currentIndexChanged.connect(self.)
+
+    def mousePressEventTab1(self, event):
+        if self. currentIndex == 0:
+            if event.button() == Qt.LeftButton:
+                self.drawing = True
+                self.last_x, self.last_y = event.x(), event.y()
+
+    def mouseMoveEventTab1(self, event):
+        if self.drawing and self.currentIndex == 0:
+            x, y = event.x(), event.y()
+            self.drawOnTab1(x, y)
+            self.last_x, self.last_y = x, y
+
+    def drawOnTab1(self, x, y):
+        painter = QPainter(self.tab1)
+        pen = QPen(Qt.black, 2, Qt.SolidLine)
+        painter.setPen(pen)
+        painter.drawLine(self.last_x, self.last_y, x, y)
+        painter.end()
+
+    # def mousePressEventTab1(self, event):
+    #     # if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "draw":
+    #     #     if self.comboBox.currentText() == "Line":
+    #     x = event.x()
+    #     y = event.y()
+    #     self.drawOnLine(x, y)
+    
+    def drawOnLine(self, x, y):
+        # painter = QPainter(self.tab1)
+        # painter.setPen(QPen(Qt.red))
+        painter = QPainter(self.Frame.pixmap())
+        painter.setPen(QPen(Qt.blue, 10, Qt.SolidLine))
+        painter.drawLine(self.x, self.y, x, y)
+        painter.end()
+        self.update()
+
+        self.x = x
+        self.y = y
+
+    # def mouseMoveEvent(self, event):
+    #     # if self.tabWidget.currentIndex() == 'draw':
+    #     # print('gg')
+    #     if self.x is None:
+    #         self.x = event.x()
+    #         self.y = event.y()
+    #         return
+        
+    #     painter = QPainter(self.Frame.pixmap())
+    #     painter.setPen(QPen(Qt.blue, 10, Qt.SolidLine))
+    #     painter.drawLine(self.x, self.y, event.x(), event.y())
+    #     painter.end()
+    #     self.update()
+
+    #     self.x = event.x()
+    #     self.y = event.y()
+    
+    def mouseReleaseEvent(self, event):
+        self.x = None
+        self.y = None
+
+    def draw(self):
+        painter = QPainter(self.Frame.pixmap())
+        painter.drawLine(100,100,500,100)
+        painter.end
 
     def openFile_video(self):
         file = QFileDialog.getOpenFileName(filter='Image (*.*)')
-        cap = cv2.VideoCapture(file[-1])
-        while True:
-            self.ret, self.frame = cap.read()
-            if self.ret:
-                self.rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB) #프레임에 색입히기
-                self.convertToQtFormat = QImage(self.rgbImage.data, self.rgbImage.shape[1], self.rgbImage.shape[0],
-                                                QImage.Format_RGB888)
+        if file:
+            self.cap = cv2.VideoCapture(file[0])
+            if not self.cap.isOpened():
+                return
+            self.timer.start(1000//self.fps)
 
-                self.pixmap = QPixmap(self.convertToQtFormat)
-                self.pixmap = self.pixmap.scaled(self.label.width(), self.label.height())
+    def update_frame(self):
+        if self.cap is not None:
+                    # self.isCameraOn = False
+                    ret, frame = self.cap.read()
+                    if ret:
+                        height, width, channel = frame.shape
+                        bytes_per_line = 3 * width
+                        qt_image = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
 
-                self.label.setPixmap(self.pixmap)
-                self.label.update() #프레임 띄우기
+                        pixmap = QPixmap.fromImage(qt_image)
+                        self.Frame.setPixmap(pixmap)
+        else:
+            self.cap.release()
+        # self.isCameraOn = True
 
-                time.sleep(0.1)  # 영상 1프레임당 0.01초로 이걸로 영상 재생속도 조절하면됨 0.02로하면 0.5배속인거임
-            else:
-                break
+        # self.ret, self.frame = cap.read()
+        # if self.ret:
+        #     self.rgbImage = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB) #프레임에 색입히기
+        #     self.convertToQtFormat = QImage(self.rgbImage.data, self.rgbImage.shape[1], self.rgbImage.shape[0],
+        #                                     QImage.Format_RGB888)
 
-        cap.release()
-        cv2.destroyAllWindows()
+        #     self.pixmap = QPixmap(self.convertToQtFormat)
+        #     pixmap = self.pixmap.scaled(self.Frame.width(), self.Frame.height())
+
+        #     self.Frame.setPixmap(pixmap)
+        #     self.Frame.update() #프레임 띄우기
+
+        #     time.sleep(0.1)  # 영상 1프레임당 0.01초로 이걸로 영상 재생속도 조절하면됨 0.02로하면 0.5배속인거임
+        # else:
+        #     breaks
+
+    # cap.release()
+    # cv2.destroyAllWindows()
 
     def openFile_camera(self):
         file = QFileDialog.getOpenFileName(filter='Image (*.*)')
@@ -107,13 +209,11 @@ class WindowClass(QMainWindow, from_class) :
         qimage = QImage(image.data, w, h, w*c, QImage.Format_RGB888)
 
         self.pixmap = self.pixmap.fromImage(qimage)
-        self.pixmap = self.pixmap.scaled(self.label.width(), self.label.height())
+        self.pixmap = self.pixmap.scaled(self.Frame.width(), self.Frame.height())
 
-        self.label.setPixmap(self.pixmap)
-        
+        self.Frame.setPixmap(self.pixmap)
 
     def tuneR(self):
-        # if self.colorDetail.currentText() == 'RGB':
         rgb_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
         h,w,c = rgb_image.shape
         self.redTune = np.full((h,w),self.Rslider.value())
@@ -187,6 +287,7 @@ class WindowClass(QMainWindow, from_class) :
                     self.shot.show()
                     self.tuneColor()
                     self.colorDetail.setCurrentText(str('RGB'))
+
                     self.cameraStart()
                 else:
                     self.Camonoff.setText('Camera on')
@@ -206,7 +307,7 @@ class WindowClass(QMainWindow, from_class) :
     def cameraStop(self):
         self.camera.running = False
         self.camera.stop()
-        self.qimage.fill(QColor(0, 0, 0))
+        # self.qimage.fill(QColor(0, 0, 0))
         # self.count = 0
         
         self.video.release()
