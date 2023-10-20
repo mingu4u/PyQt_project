@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1034</width>
+    <height>868</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(0, 0, 0)</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>580</y>
+     <width>1071</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(246, 245, 244, 80);</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>9</y>
+      <width>1021</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="color">
+     <attribute name="title">
+      <string>color</string>
+     </attribute>
+     <widget class="QSlider" name="Rslider">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>10</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-255</number>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Gslider">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>50</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-255</number>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Bslider">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>90</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>-255</number>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="Rcheck">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>10</y>
+        <width>61</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Red</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="Gcheck">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>50</y>
+        <width>61</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Green</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="Bcheck">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>90</y>
+        <width>61</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Blue</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Hslider">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>10</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Sslider">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>50</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QSlider" name="Vslider">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>90</y>
+        <width>380</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="colorDetail">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>60</width>
+        <height>25</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Hue">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>20</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Hue</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Saturation">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>60</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Saturation</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Value">
+      <property name="geometry">
+       <rect>
+        <x>540</x>
+        <y>100</y>
+        <width>67</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Value</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="draw">
+     <attribute name="title">
+      <string>draw</string>
+     </attribute>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>291</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="erase_all">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>100</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>erase all</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="erase">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>erase</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="crop">
+      <property name="geometry">
+       <rect>
+        <x>220</x>
+        <y>100</y>
+        <width>89</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>crop</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Shape Select</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="filter">
+     <attribute name="title">
+      <string>filter</string>
+     </attribute>
+     <widget class="QComboBox" name="comboBox_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>281</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>10</y>
+        <width>111</width>
+        <height>17</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Filter Select</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="stretch">
+     <attribute name="title">
+      <string>stretch</string>
+     </attribute>
+    </widget>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>190</y>
+      <width>131</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>151</width>
+      <height>80</height>
+     </size>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="camera">
+     <attribute name="title">
+      <string>Photo</string>
+     </attribute>
+     <widget class="QPushButton" name="shot">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 20pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>📸</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="photoFile">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 20pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>📂</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="video">
+     <attribute name="title">
+      <string>Video</string>
+     </attribute>
+     <widget class="QPushButton" name="Start">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 20pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>🔴</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="videoFile">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 20pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>📂</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Stop">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>61</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 20pt &quot;Ubuntu&quot;;</string>
+      </property>
+      <property name="text">
+       <string>⬛️</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="Camonoff">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>200</y>
+      <width>151</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Camera On</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="Frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>1021</width>
+     <height>561</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
